@@ -60,6 +60,7 @@ const mutations = {
     state.activeCategory = { ...payload, fullName };
   },
   ADD_NEW_COMMODITY: (state, payload) => {
+    state.commodities.push(payload);
     console.log('add new commodity payload', payload);
   },
 };
@@ -123,28 +124,29 @@ const actions = {
         },
       );
       const { data, error } = await response.json();
-      if (data) {
-        this.$notify({
-          group: 'foo',
-          title: 'Commodity created',
-        });
-      }
-      if (error) {
-        this.$notify({
-          group: 'foo',
-          title: 'Error',
-          type: 'error',
-          text: error,
-        });
-      }
-      commit('ADD_NEW_COMMODITY', response);
+      // if (data) {
+      //   this.$notify({
+      //     group: 'foo',
+      //     title: 'Commodity created',
+      //   });
+      // }
+      // if (error) {
+      //   this.$notify({
+      //     group: 'foo',
+      //     title: 'Error',
+      //     type: 'error',
+      //     text: error,
+      //   });
+      // }
+      commit('ADD_NEW_COMMODITY', data);
       return data;
     } catch (error) {
-      this.$notify({
-        group: 'foo',
-        title: error.message || 'Something went wrong',
-        type: 'error',
-      });
+      console.log(error);
+      // this.$notify({
+      //   group: 'foo',
+      //   title: error.message || 'Something went wrong',
+      //   type: 'error',
+      // });
       return null;
     }
   },
@@ -160,29 +162,11 @@ const actions = {
         },
       );
 
-      const { data, error } = await response.json();
-      if (data) {
-        this.$notify({
-          group: 'foo',
-          title: 'Commodity updated',
-        });
-      }
-      if (error) {
-        this.$notify({
-          group: 'foo',
-          title: 'Error',
-          type: 'error',
-          text: error,
-        });
-      }
-      return data;
+      const { data } = await response.json();
+
+      return { success: true, data };
     } catch (error) {
-      this.$notify({
-        group: 'foo',
-        title: error.message || 'Something went wrong',
-        type: 'error',
-      });
-      return null;
+      return { success: false, error: error.message };
     }
   },
   async UPLOAD_IMAGES({ state, getters, commit }, { data, id }) {
