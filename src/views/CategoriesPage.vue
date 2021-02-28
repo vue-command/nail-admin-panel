@@ -29,6 +29,7 @@
 
         <confirmDelete :dialog.sync="showDialog" :title="title" :confirmDelete="deleteSubcategoryHandler" />
 
+        <ErrorPopup :dialog.sync="cantBeDeleted" :title="title" :confirmDelete="() => cantBeDeleted = false"/>
         <v-row>
           <v-col cols="12">
             <v-card v-if="!data.length" class="py-4 px-6">
@@ -98,6 +99,7 @@ export default {
   components: {
     AddSubcategory: () => import('@/components/inputs/AddSubcategory.vue'),
     confirmDelete: () => import('@/components/popups/confirmDelete.vue'),
+    ErrorPopup: () => import('@/components/popups/errorDialog.vue'),
   },
   data() {
     return {
@@ -107,6 +109,7 @@ export default {
       title: 'subcategory',
       onchangeId: '',
       deleteId: '',
+      cantBeDeleted: false
       // newSubcategoryName: '',
     };
   },
@@ -138,6 +141,11 @@ export default {
       this.fillingData();
     },
     removeSubcat(id) {
+      const test = this.data.find(el => el._id === id)
+      if (test && test.amountOfProduct > 0) {
+        this.cantBeDeleted = true;
+        return
+      }
       this.deleteId = id;
       this.showDialog = true;
     },

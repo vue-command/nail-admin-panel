@@ -27,7 +27,7 @@
           </v-list-item-icon>
           <v-list-item-title>Shop</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="goTo('shop-categories')">
+        <v-list-item @click="goTo('categories')">
           <v-list-item-icon>
             <v-icon>$shopCategories</v-icon>
           </v-list-item-icon>
